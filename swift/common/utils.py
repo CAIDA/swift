@@ -689,7 +689,10 @@ def drop_buffer_cache(fd, offset, length):
     """
     global _posix_fadvise
     if _posix_fadvise is None:
-        _posix_fadvise = load_libc_function('posix_fadvise64')
+        if sys.platform.startswith('freebsd'):
+            _posix_fadvise = load_libc_function('posix_fadvise')
+        else:
+            _posix_fadvise = load_libc_function('posix_fadvise64')
     # 4 means "POSIX_FADV_DONTNEED"
     ret = _posix_fadvise(fd, ctypes.c_uint64(offset),
                          ctypes.c_uint64(length), 4)
