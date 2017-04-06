@@ -37,6 +37,7 @@ import fcntl
 import json
 import os
 import re
+import sys
 import time
 import uuid
 import hashlib
@@ -83,6 +84,8 @@ DEFAULT_RECLAIM_AGE = timedelta(weeks=1).total_seconds()
 HASH_FILE = 'hashes.pkl'
 HASH_INVALIDATIONS_FILE = 'hashes.invalid'
 METADATA_KEY = 'user.swift.metadata'
+if sys.platform.startswith('freebsd'):
+    METADATA_KEY = 'swift.metadata'
 DROP_CACHE_WINDOW = 1024 * 1024
 # These are system-set metadata keys that cannot be changed with a POST.
 # They should be lowercase.
