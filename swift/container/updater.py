@@ -23,6 +23,11 @@ from swift import gettext_ as _
 from random import random, shuffle
 from tempfile import mkstemp
 
+# AK hax kqueue support out of eventlet since kqueues don't survive a fork
+from eventlet import patcher
+__select = patcher.original('select')
+del __select.kqueue
+
 from eventlet import spawn, patcher, Timeout
 
 import swift.common.db
